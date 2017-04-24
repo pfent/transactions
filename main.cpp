@@ -19,7 +19,8 @@ struct Operation {
      * w_j[x] | true   | true
      */
     bool conflicts(const Operation &other) const {
-        return (field == other.field)
+        return (transaction != other.transaction)
+               && (field == other.field)
                && (write || other.write);
     }
 };
