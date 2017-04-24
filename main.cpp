@@ -1,8 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <set>
-#include <tuple>
-#include <functional>
 #include <algorithm>
 
 using namespace std;
@@ -28,23 +26,23 @@ struct Operation {
 
 struct SRGraphNode {
     int transaction;
-    vector<reference_wrapper<SRGraphNode>> conflicts{};
+    vector<SRGraphNode *> conflicts{};
 
     SRGraphNode(int transaction) : transaction(transaction) {
     }
 };
 
-bool dfsDuplicate(SRGraphNode &node, set<reference_wrapper<SRGraphNode>> visited = {}) {
-    if(visited.find(ref(node)) != visited.end()) {
+bool dfsDuplicate(SRGraphNode *node, set<SRGraphNode *> visited = {}) {
+    if (visited.find(node) != visited.end()) {
         return true;
     }
-    visited.insert(ref(node));
-    return any_of(node.conflicts.begin(), node.conflicts.end(), [visited](auto& n) {
-        dfsDuplicate(n, visited);
+    visited.insert(node);
+    return any_of(node->conflicts.begin(), node->conflicts.end(), [visited](auto n) {
+        return dfsDuplicate(n, visited);
     });
 }
 
-int main() {
+int main(int argc, char *[]) {
     vector<Operation> operations;
     int numberTransactions = 0;
     for (char write, transaction, field;
@@ -55,10 +53,6 @@ int main() {
         if (operations.back().transaction > numberTransactions) {
             numberTransactions = operations.back().transaction;
         }
-    }
-
-    for (auto op : operations) {
-        cout << op.write << ' ' << op.transaction << ' ' << op.field << endl;
     }
 
     vector<SRGraphNode> nodes;
@@ -72,18 +66,28 @@ int main() {
             const auto &other = operations[j];
             if (op.conflicts(other)) {
                 auto &conflict = nodes[other.transaction - 1];
-                nodes[op.transaction - 1].conflicts.push_back(ref(conflict));
+                nodes[op.transaction - 1].conflicts.push_back(&conflict);
             }
         }
     }
 
-    for (const auto &node : nodes) {
-        for (const auto &conflict : node.conflicts) {
-            cout << node.transaction << " -> " << conflict.get().transaction << endl;
+    if (argc > 1) {
+        cout << "digraph \"precedence graph\" {" << endl;
+        for (const auto &node : nodes) {
+            for (const auto &conflict : node.conflicts) {
+                cout << node.transaction << " -> " << conflict->transaction << endl;
+            }
         }
+        cout << "}" << endl;
     }
 
-    return any_of(nodes.begin(), nodes.end(), [](auto& node) {
-        return dfsDuplicate(node);
+    auto serializable = none_of(nodes.begin(), nodes.end(), [](SRGraphNode &node) {
+        return dfsDuplicate(&node);
     });
+
+    if (argc == 1) {
+        cout << (serializable ? "true" : "false") << endl;
+    }
+
+    return !serializable; // return code logic is inverted
 }
