@@ -94,7 +94,7 @@ int main(int argc, char *[]) {
         cout << "}" << endl;
     }
 
-    // the whole history is serializable, iff the precedence graph has no cycles.
+    // the whole history is serializable, if the precedence graph has no cycles.
     // note: we can't just start with any node, because the graph is not necessarily connected. We need to at least
     // visit every node once. The most efficient implementation would only start at the next unvisited node again, but
     // the least effort implementation just traverses the graph from every start node.
