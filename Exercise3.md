@@ -8,7 +8,7 @@ header-includes:
 ---
 <!-- compile with: pandoc Exercise3.md -o Exercise3.pdf -->
 # Exercises for *Transaction Systems*, Sheet No. 3
-Philipp Fent
+Philipp Fent  
 MatrNr: 03647020
 
 ## Exercise 1
@@ -32,7 +32,7 @@ $$
   Prove by contradiction: Let the three statements from above and assume, there is a view equivalent serial schedule $s_2$ with $T_j < T_i$.  
   Since we have an edge in $CG(s_1)$, between $T_i \to T_j$ because of x, we can differenciate between the three possible conflicts:  
     1. $w_i(x) < r_j(x)$:  
-    Then $(T_i, x, T_j) \in RF(s_1)$, "$T_j$ reads from $T_i".  
+    Then $(T_i, x, T_j) \in RF(s_1)$, "$T_j$ reads from $T_i$".  
     This contradicts VSR equivalence, because $T_j < T_i \Rightarrow (T_i, x, T_j) \not\in RF(s_2)$, i.e. $RF(s_1) \neq RF(s_2)$
     2. $r_i(x) < w_j(x)$:  
     Then $(T_i, x, T_j) \not\in RF(s_1)$.  
@@ -41,8 +41,16 @@ $$
     Then $(T_j, x T_{\infty}) \in RF(s_1)$.  
     This contradicts VSR equivalence, because $op(s_1) = op(s_2)$ and no other transaction writes $x$, implies $(T_i, x, T_{\infty}) \in RF(s_2)$, i.e. $RF(s_1) \neq RF(s_2)$  
 We exhausted all the cases, which prooves by contradiction: In any serial schedule that is view equivalent to $s_1$: $T_i < T_j$
-* $(\Leftarrow)$: 
+* $(\Leftarrow)$:  
+Let: $(\forall T \subseteq trans(s)) \Pi_T(s) \in VSR$  
+Now assume $s \not\in CSR$ and prove by contradiction.  
+Since $s \not\in CSR$ we know, that we can find a shortest cycle ${T_1, ... T_k}$ in $CG(s)$.  
+Now check the precondition for the lemma: There is an edge $T_i \to T_j$ because of $x$, then no other transaction in the cycle writes $x$.  
+Prove by contradiction: Suppose another transaction $T_k$ with $T_j \to^* T_k$ writes $x$. Then there would also be an edge $T_i \to T_k$, which contradicts our assumption, that this is the shortest cycle.  
+Thus, in the shortest cycle in $CG(s)$, no other transaction writes $x$.  
+This allows us to use the lemma to show, that $T_1 < ... < T_k < T_1$ in any view equivalent serial schedule, which is impossible.  
 
+\hfill\ensuremath{\blacksquare}
 
 ## Exercise 2
 $$
