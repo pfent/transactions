@@ -1,0 +1,19 @@
+// s= w1(x) r1(y) r2(z) w2(y) w1(z)
+digraph s4e1 {
+    "w1(x)" [shape=none, color=red, fontcolor=red];
+    "r1(y)" [shape=none, color=red, fontcolor=red];
+    "w1(z)" [shape=none, color=red, fontcolor=red];
+    "r2(z)" [shape=none, color=blue, fontcolor=blue];
+    "w2(y)" [shape=none, color=blue, fontcolor=blue];
+    "w1(x)" -> "r1(y)" [label=" I "];
+    "r1(y)" -> "w1(z)" [label=" I "];
+    "r2(z)" -> "w2(y)" [label=" I "];
+    "w1(x)" -> "w2(y)" [label=" D "];
+    "r1(y)" -> "w2(y)" [label=" D, F "];
+    "r2(z)" -> "w1(z)" [label=" D, B "];
+    //"r1(y)" -> "w2(y)" [label=" F "];
+    "w2(y)" -> "w1(z)" [label=" F "];
+    "w1(x)" -> "r2(z)" [label=" B "];
+    "r1(y)" -> "r2(z)" [label=" B "];
+    //"r2(z)" -> "w1(z)" [label=" B "];
+}
