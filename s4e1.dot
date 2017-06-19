@@ -1,19 +1,19 @@
-// s= w1(x) r1(y) r2(z) w2(y) w1(z)
+// display with: cat s4e1.dot | dot -Kfdp -Tpng | display -
 digraph s4e1 {
-    "w1(x)" [shape=none, color=red, fontcolor=red];
-    "r1(y)" [shape=none, color=red, fontcolor=red];
-    "w1(z)" [shape=none, color=red, fontcolor=red];
-    "r2(z)" [shape=none, color=blue, fontcolor=blue];
-    "w2(y)" [shape=none, color=blue, fontcolor=blue];
-    "w1(x)" -> "r1(y)" [label=" I "];
-    "r1(y)" -> "w1(z)" [label=" I "];
-    "r2(z)" -> "w2(y)" [label=" I "];
-    "w1(x)" -> "w2(y)" [label=" D "];
-    "r1(y)" -> "w2(y)" [label=" D, F "];
-    "r2(z)" -> "w1(z)" [label=" D, B "];
-    //"r1(y)" -> "w2(y)" [label=" F "];
-    "w2(y)" -> "w1(z)" [label=" F "];
-    "w1(x)" -> "r2(z)" [label=" B "];
-    "r1(y)" -> "r2(z)" [label=" B "];
-    //"r2(z)" -> "w1(z)" [label=" B "];
+    "w1(x)" [shape=none, pos = "0,2!"];
+    "r1(y)" [shape=none, pos = "4,2!"];
+    "w1(z)" [shape=none, pos = "8,2!"];
+    "r2(z)" [shape=none, pos = "2,0!"];
+    "w2(y)" [shape=none, pos = "6,0!"];
+    "w1(x)" -> "r1(y)" [label=" I ", color="black", fontcolor="black"];
+    "r1(y)" -> "w1(z)" [label=" I ", color="black", fontcolor="black"];
+    "r2(z)" -> "w2(y)" [label=" I ", color="black", fontcolor="black"];
+    "w1(x)" -> "w2(y)" [label=" D ", color="blue", fontcolor="blue"];
+    "r1(y)" -> "w2(y)" [label=" D ", color="blue", fontcolor="blue"];
+    "r2(z)" -> "w1(z)" [label=" D ", color="blue", fontcolor="blue"];
+    "r1(y)" -> "w2(y)" [label=" F ", color="green", fontcolor="green"];
+    "w2(y)" -> "w1(z)" [label=" F ", color="green", fontcolor="green"];
+    "w1(x)" -> "r2(z)" [label=" B ", color="red", fontcolor="red"];
+    "r1(y)" -> "r2(z)" [label=" B ", color="red", fontcolor="red"];
+    "r2(z)" -> "w1(z)" [label=" B ", color="red", fontcolor="red"];
 }
